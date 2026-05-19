@@ -29,7 +29,7 @@ with open("factory.png", "rb") as image_file:
 
 st.subheader("⚙️ CÀI ĐẶT HỆ THỐNG")
 
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3 = st.columns(3)
 
 # SPEED
 
@@ -41,7 +41,7 @@ with col1:
 
         0.1,
         2.0,
-        0.62,
+        0.6,
         0.01
     )
 
@@ -58,31 +58,17 @@ with col2:
         2
     )
 
-# EXTEND
+# CYLINDER
 
 with col3:
 
-    cylinder_extend = st.slider(
+    cylinder_time = st.slider(
 
-        "➡️ XY LANH GẠT RA (ms)",
-
-        100,
-        1000,
-        300,
-        10
-    )
-
-# RETURN
-
-with col4:
-
-    cylinder_return = st.slider(
-
-        "⬅️ XY LANH THU VỀ (ms)",
+        "⚙️ THỜI GIAN XY LANH (ms)",
 
         100,
         1000,
-        300,
+        240,
         10
     )
 
@@ -175,7 +161,7 @@ body {{
 
     position:absolute;
 
-    width:230px;
+    width:250px;
     height:60px;
 
     background:white;
@@ -199,13 +185,13 @@ body {{
     left:100px;
 }}
 
-.extend-info {{
+.cylinder-info {{
 
     top:160px;
     left:100px;
 }}
 
-.return-info {{
+.success-info {{
 
     top:240px;
     left:100px;
@@ -560,15 +546,16 @@ body {{
     <!-- INFO -->
 
     <div class="info belt-info">
-        🚀 {belt_speed_mps:.2f} ms
+        🚀 {belt_speed_mps:.2f} m/s
     </div>
 
-    <div class="info extend-info">
-        ➡️ {cylinder_extend:.0f} ms
+    <div class="info cylinder-info">
+        ⚙️ {cylinder_time:.0f} ms
     </div>
 
-    <div class="info return-info">
-        ⬅️ {cylinder_return:.0f} ms
+    <div class="info success-info">
+        🎯 SUCCESS:
+        <span id="successText"></span>
     </div>
 
     <!-- COUNTER -->
@@ -579,12 +566,12 @@ body {{
     </div>
 
     <div class="counter counter2">
-        🟡 CHIN:
+        🟡 CHÍN:
         <span id="count2">0</span>
     </div>
 
     <div class="counter counter3">
-        ⚫ HONG:
+        ⚫ HỎNG:
         <span id="count3">0</span>
     </div>
 
@@ -641,11 +628,11 @@ body {{
     </div>
 
     <div class="label center-label">
-        CHIN
+        CHÍN
     </div>
 
     <div class="label right-label">
-        HONG
+        HỎNG
     </div>
 
 </div>
@@ -655,11 +642,11 @@ body {{
 const factory =
     document.querySelector(".factory");
 
+// =========================
 // START STOP
+// =========================
 
 let running = true;
-
-// BUTTON
 
 document.getElementById(
     "startBtn"
@@ -675,13 +662,80 @@ document.getElementById(
     running = false;
 }}
 
+// =========================
 // COUNTER
+// =========================
 
 let greenCount = 0;
 let yellowCount = 0;
 let blackCount = 0;
 
+// =========================
+// HỒI QUY
+// =========================
+
+let x1 =
+    {cylinder_time};
+
+let x2 =
+    {belt_speed_mps};
+
+let successRate =
+
+    (
+        -0.0008 * x1 * x1
+    )
+
+    +
+
+    (
+        -40.179 * x2 * x2
+    )
+
+    +
+
+    (
+        0.384 * x1
+    )
+
+    +
+
+    (
+        48.18 * x2
+    )
+
+    +
+
+    35.476;
+
+// LIMIT
+
+if (successRate > 100) {{
+
+    successRate = 100;
+}}
+
+if (successRate < 0) {{
+
+    successRate = 0;
+}}
+
+// MISS RATE
+
+let missRate =
+    1 - (successRate / 100);
+
+// SHOW
+
+document.getElementById(
+    "successText"
+).innerText =
+
+    successRate.toFixed(1) + "%";
+
+// =========================
 // RANDOM LIST
+// =========================
 
 let types = [
 
@@ -701,11 +755,11 @@ let types = [
     }}
 ];
 
-// shuffle
-
 types.sort(() => Math.random() - 0.5);
 
+// =========================
 // CREATE PAPAYA
+// =========================
 
 function createPapaya() {{
 
@@ -756,25 +810,6 @@ function createPapaya() {{
 
     let duration = 8;
 
-    if (
-        randomType.animation == "moveLeft"
-    ) {{
-
-        duration = 5.5;
-    }}
-
-    else if (
-        randomType.animation == "moveCenter"
-    ) {{
-
-        duration = 9;
-    }}
-
-    else {{
-
-        duration = 10;
-    }}
-
     papaya.style.animation =
 
         randomType.animation +
@@ -801,7 +836,9 @@ function createPapaya() {{
     );
 }}
 
+// =========================
 // RANDOM QUẢ
+// =========================
 
 setInterval(() => {{
 
@@ -812,7 +849,9 @@ setInterval(() => {{
 
 }}, {papaya_spawn * 1000});
 
+// =========================
 // SENSOR
+// =========================
 
 setInterval(() => {{
 
@@ -877,13 +916,22 @@ setInterval(() => {{
                 "cylinder1"
             ).style.background = "lime";
 
+            let missed =
+                Math.random() < missRate;
+
+            if (missed) {{
+
+                papaya.style.animation =
+                    "moveRight 3s linear forwards";
+            }}
+
             setTimeout(() => {{
 
                 document.getElementById(
                     "cylinder1"
                 ).style.background = "#666";
 
-            }}, 300);
+            }}, {cylinder_time});
         }}
 
         // SENSOR 2
@@ -936,13 +984,22 @@ setInterval(() => {{
                 "cylinder2"
             ).style.background = "lime";
 
+            let missed =
+                Math.random() < missRate;
+
+            if (missed) {{
+
+                papaya.style.animation =
+                    "moveRight 3s linear forwards";
+            }}
+
             setTimeout(() => {{
 
                 document.getElementById(
                     "cylinder2"
                 ).style.background = "#666";
 
-            }}, 300);
+            }}, {cylinder_time});
         }}
 
         // SENSOR 3
