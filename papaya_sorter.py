@@ -640,6 +640,15 @@ document.getElementById(
 ).onclick = () => {{
 
     running = true;
+    // CHẠY LẠI TẤT CẢ QUẢ
+
+document.querySelectorAll(
+    ".papaya"
+).forEach((papaya) => {{
+
+    papaya.style.animationPlayState =
+        "running";
+}});
 }}
 
 document.getElementById(
@@ -647,6 +656,15 @@ document.getElementById(
 ).onclick = () => {{
 
     running = false;
+    // DỪNG TẤT CẢ QUẢ
+
+document.querySelectorAll(
+    ".papaya"
+).forEach((papaya) => {{
+
+    papaya.style.animationPlayState =
+        "paused";
+}});
 }}
 
 // =========================
