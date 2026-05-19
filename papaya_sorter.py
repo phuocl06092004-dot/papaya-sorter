@@ -18,6 +18,7 @@ st.title("🥭 HỆ THỐNG PHÂN LOẠI ĐU ĐỦ")
 # =========================
 
 with open("factory.png", "rb") as image_file:
+
     encoded_image = base64.b64encode(
         image_file.read()
     ).decode()
@@ -120,6 +121,8 @@ body {{
     font-weight:bold;
 
     cursor:pointer;
+
+    transition:0.3s;
 
     box-shadow:
         0 0 12px rgba(0,0,0,0.4);
@@ -640,15 +643,44 @@ document.getElementById(
 ).onclick = () => {{
 
     running = true;
+
+    // START SÁNG
+
+    document.getElementById(
+        "startBtn"
+    ).style.boxShadow =
+
+        "0 0 40px lime";
+
+    document.getElementById(
+        "startBtn"
+    ).style.transform =
+
+        "scale(1.05)";
+
+    // STOP TẮT
+
+    document.getElementById(
+        "stopBtn"
+    ).style.boxShadow =
+
+        "0 0 12px rgba(0,0,0,0.4)";
+
+    document.getElementById(
+        "stopBtn"
+    ).style.transform =
+
+        "scale(1)";
+
     // CHẠY LẠI TẤT CẢ QUẢ
 
-document.querySelectorAll(
-    ".papaya"
-).forEach((papaya) => {{
+    document.querySelectorAll(
+        ".papaya"
+    ).forEach((papaya) => {{
 
-    papaya.style.animationPlayState =
-        "running";
-}});
+        papaya.style.animationPlayState =
+            "running";
+    }});
 }}
 
 document.getElementById(
@@ -656,15 +688,44 @@ document.getElementById(
 ).onclick = () => {{
 
     running = false;
+
+    // STOP SÁNG
+
+    document.getElementById(
+        "stopBtn"
+    ).style.boxShadow =
+
+        "0 0 40px red";
+
+    document.getElementById(
+        "stopBtn"
+    ).style.transform =
+
+        "scale(1.05)";
+
+    // START TẮT
+
+    document.getElementById(
+        "startBtn"
+    ).style.boxShadow =
+
+        "0 0 12px rgba(0,0,0,0.4)";
+
+    document.getElementById(
+        "startBtn"
+    ).style.transform =
+
+        "scale(1)";
+
     // DỪNG TẤT CẢ QUẢ
 
-document.querySelectorAll(
-    ".papaya"
-).forEach((papaya) => {{
+    document.querySelectorAll(
+        ".papaya"
+    ).forEach((papaya) => {{
 
-    papaya.style.animationPlayState =
-        "paused";
-}});
+        papaya.style.animationPlayState =
+            "paused";
+    }});
 }}
 
 // =========================
@@ -846,11 +907,6 @@ function createPapaya() {{
         duration = blackDuration;
     }}
 
-    // SAVE
-
-    papaya.dataset.duration =
-        duration;
-
     papaya.style.animation =
 
         randomType.animation +
@@ -897,8 +953,6 @@ function spawnPapaya() {{
         {papaya_spawn * 1000}
     );
 }}
-
-// START SPAWN
 
 spawnPapaya();
 
@@ -952,81 +1006,6 @@ setInterval(() => {{
             }}, 300);
         }}
 
-        // XY LANH 1
-
-        if (
-
-            rect.left > 900 &&
-            rect.left < 1000 &&
-            rect.top > 400 &&
-
-            papaya.dataset.cylinder1 != "1"
-        ) {{
-
-            papaya.dataset.cylinder1 = "1";
-
-            document.getElementById(
-                "cylinder1"
-            ).style.background = "lime";
-
-            let missed =
-                Math.random() < missRate;
-
-            // GẠT HỤT
-
-            if (missed) {{
-
-                const missedPapaya =
-                    papaya.cloneNode(true);
-
-                missedPapaya.style.left =
-                    rect.left + "px";
-
-                missedPapaya.style.top =
-                    rect.top + "px";
-
-                missedPapaya.style.animation =
-
-                    "moveRight " +
-
-                    4.5 /
-
-                    ({belt_speed_mps} * 1.5)
-
-                    +
-
-                    "s linear forwards";
-
-                factory.appendChild(
-                    missedPapaya
-                );
-
-                // ẨN QUẢ CŨ
-
-                papaya.style.display =
-                    "none";
-
-                missedPapaya.addEventListener(
-
-                    "animationend",
-
-                    () => {{
-
-                        missedPapaya.remove();
-
-                    }}
-                );
-            }}
-
-            setTimeout(() => {{
-
-                document.getElementById(
-                    "cylinder1"
-                ).style.background = "#666";
-
-            }}, {cylinder_time});
-        }}
-
         // SENSOR 2
 
         if (
@@ -1058,79 +1037,6 @@ setInterval(() => {{
                     "#2196f3";
 
             }}, 300);
-        }}
-
-        // XY LANH 2
-
-        if (
-
-            rect.left > 1100 &&
-            rect.left < 1350 &&
-            rect.top > 400 &&
-
-            papaya.dataset.cylinder2 != "1"
-        ) {{
-
-            papaya.dataset.cylinder2 = "1";
-
-            document.getElementById(
-                "cylinder2"
-            ).style.background = "lime";
-
-            let missed =
-                Math.random() < missRate;
-
-            // GẠT HỤT
-
-            if (missed) {{
-
-                const missedPapaya =
-                    papaya.cloneNode(true);
-
-                missedPapaya.style.left =
-                    rect.left + "px";
-
-                missedPapaya.style.top =
-                    rect.top + "px";
-
-                missedPapaya.style.animation =
-
-                    "moveRight " +
-
-                    5 /
-
-                    ({belt_speed_mps} * 1.5)
-
-                    +
-
-                    "s linear forwards";
-
-                factory.appendChild(
-                    missedPapaya
-                );
-
-                papaya.style.display =
-                    "none";
-
-                missedPapaya.addEventListener(
-
-                    "animationend",
-
-                    () => {{
-
-                        missedPapaya.remove();
-
-                    }}
-                );
-            }}
-
-            setTimeout(() => {{
-
-                document.getElementById(
-                    "cylinder2"
-                ).style.background = "#666";
-
-            }}, {cylinder_time});
         }}
 
         // SENSOR 3
