@@ -502,7 +502,7 @@ body {{
     }}
 
     70% {{
-        left:1570px;
+        left:1580px;
         top:400px;
     }}
 
