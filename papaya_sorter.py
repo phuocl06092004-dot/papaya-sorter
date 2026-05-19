@@ -18,7 +18,6 @@ st.title("🥭 HỆ THỐNG PHÂN LOẠI ĐU ĐỦ")
 # =========================
 
 with open("factory.png", "rb") as image_file:
-
     encoded_image = base64.b64encode(
         image_file.read()
     ).decode()
@@ -30,8 +29,6 @@ with open("factory.png", "rb") as image_file:
 st.subheader("⚙️ CÀI ĐẶT HỆ THỐNG")
 
 col1, col2, col3 = st.columns(3)
-
-# SPEED
 
 with col1:
 
@@ -45,8 +42,6 @@ with col1:
         0.01
     )
 
-# SPAWN
-
 with col2:
 
     papaya_spawn = st.slider(
@@ -57,8 +52,6 @@ with col2:
         10,
         2
     )
-
-# CYLINDER
 
 with col3:
 
@@ -88,9 +81,7 @@ body {{
 
     margin:0;
     padding:0;
-
     overflow:hidden;
-
     background:#f2f2f2;
 }}
 
@@ -105,9 +96,7 @@ body {{
         url("data:image/png;base64,{encoded_image}");
 
     background-size:60%;
-
     background-repeat:no-repeat;
-
     background-position:center 50px;
 }}
 
@@ -123,7 +112,6 @@ body {{
     height:55px;
 
     border:none;
-
     border-radius:12px;
 
     color:white;
@@ -441,7 +429,6 @@ body {{
     position:absolute;
 
     font-size:24px;
-
     font-weight:bold;
 
     color:white;
@@ -808,20 +795,53 @@ function createPapaya() {{
     papaya.style.background =
         randomType.color;
 
-    let duration = 8;
+    // =========================
+    // TỐC ĐỘ RIÊNG
+    // =========================
+
+    let greenDuration = 3;
+
+    let yellowDuration = 5;
+
+    let blackDuration = 5;
+
+    let duration = blackDuration;
+
     if (
         randomType.animation == "moveLeft"
     ) {{
 
-        duration = 4.5;
+        duration = greenDuration;
     }}
+
+    if (
+        randomType.animation == "moveCenter"
+    ) {{
+
+        duration = yellowDuration;
+    }}
+
+    if (
+        randomType.animation == "moveRight"
+    ) {{
+
+        duration = blackDuration;
+    }}
+
+    // SAVE
+
+    papaya.dataset.duration =
+        duration;
+
     papaya.style.animation =
 
         randomType.animation +
 
         " " +
 
-        duration / ({belt_speed_mps} * 1.5) +
+        duration / ({belt_speed_mps} * 1.5)
+
+        +
 
         "s linear forwards";
 
@@ -845,14 +865,24 @@ function createPapaya() {{
 // RANDOM QUẢ
 // =========================
 
-setInterval(() => {{
+function spawnPapaya() {{
 
     if (running) {{
 
         createPapaya();
     }}
 
-}}, {papaya_spawn * 1000});
+    setTimeout(
+
+        spawnPapaya,
+
+        {papaya_spawn * 1000}
+    );
+}}
+
+// START SPAWN
+
+spawnPapaya();
 
 // =========================
 // SENSOR
@@ -924,10 +954,50 @@ setInterval(() => {{
             let missed =
                 Math.random() < missRate;
 
+            // GẠT HỤT
+
             if (missed) {{
 
-                papaya.style.animation =
-                    "moveRight 3s linear forwards";
+                const missedPapaya =
+                    papaya.cloneNode(true);
+
+                missedPapaya.style.left =
+                    rect.left + "px";
+
+                missedPapaya.style.top =
+                    rect.top + "px";
+
+                missedPapaya.style.animation =
+
+                    "moveRight " +
+
+                    4.5 /
+
+                    ({belt_speed_mps} * 1.5)
+
+                    +
+
+                    "s linear forwards";
+
+                factory.appendChild(
+                    missedPapaya
+                );
+
+                // ẨN QUẢ CŨ
+
+                papaya.style.display =
+                    "none";
+
+                missedPapaya.addEventListener(
+
+                    "animationend",
+
+                    () => {{
+
+                        missedPapaya.remove();
+
+                    }}
+                );
             }}
 
             setTimeout(() => {{
@@ -992,17 +1062,48 @@ setInterval(() => {{
             let missed =
                 Math.random() < missRate;
 
+            // GẠT HỤT
+
             if (missed) {{
 
-                papaya.style.animation =
+                const missedPapaya =
+                    papaya.cloneNode(true);
+
+                missedPapaya.style.left =
+                    rect.left + "px";
+
+                missedPapaya.style.top =
+                    rect.top + "px";
+
+                missedPapaya.style.animation =
 
                     "moveRight " +
 
-                    duration / ({belt_speed_mps} * 1.5)
+                    5 /
+
+                    ({belt_speed_mps} * 1.5)
 
                     +
 
                     "s linear forwards";
+
+                factory.appendChild(
+                    missedPapaya
+                );
+
+                papaya.style.display =
+                    "none";
+
+                missedPapaya.addEventListener(
+
+                    "animationend",
+
+                    () => {{
+
+                        missedPapaya.remove();
+
+                    }}
+                );
             }}
 
             setTimeout(() => {{
