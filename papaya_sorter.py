@@ -503,12 +503,12 @@ body {{
 
     75% {{
         left:1580px;
-        top:350px;
+        top:400px;
     }}
 
     100% {{
         left:1800px;
-        top:580px;
+        top:5300px;
     }}
 }}
 
