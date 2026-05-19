@@ -67,7 +67,7 @@ with col3:
         "⚙️ THỜI GIAN XY LANH (ms)",
 
         100,
-        1000,
+        300,
         240,
         10
     )
