@@ -995,7 +995,14 @@ setInterval(() => {{
             if (missed) {{
 
                 papaya.style.animation =
-                    "moveRight 3s linear forwards";
+
+                    "moveRight " +
+
+                    duration / ({belt_speed_mps} * 1.5)
+
+                    +
+
+                    "s linear forwards";
             }}
 
             setTimeout(() => {{
