@@ -3,7 +3,7 @@ import streamlit.components.v1 as components
 import base64
 
 # =========================
-# GIAO DIỆN
+# PAGE
 # =========================
 
 st.set_page_config(
@@ -14,7 +14,7 @@ st.set_page_config(
 st.title("🥭 HỆ THỐNG PHÂN LOẠI ĐU ĐỦ")
 
 # =========================
-# ĐỌC ẢNH
+# LOAD IMAGE
 # =========================
 
 with open("factory.png", "rb") as image_file:
@@ -24,14 +24,14 @@ with open("factory.png", "rb") as image_file:
     ).decode()
 
 # =========================
-# CÀI ĐẶT HỆ THỐNG
+# CONTROL PANEL
 # =========================
 
 st.subheader("⚙️ CÀI ĐẶT HỆ THỐNG")
 
 col1, col2, col3, col4 = st.columns(4)
 
-# TỐC ĐỘ BĂNG TẢI
+# SPEED
 
 with col1:
 
@@ -45,7 +45,7 @@ with col1:
         0.01
     )
 
-# THỜI GIAN RA QUẢ
+# SPAWN
 
 with col2:
 
@@ -58,7 +58,7 @@ with col2:
         2
     )
 
-# XY LANH GẠT RA
+# EXTEND
 
 with col3:
 
@@ -72,7 +72,7 @@ with col3:
         10
     )
 
-# XY LANH THU VỀ
+# RETURN
 
 with col4:
 
@@ -103,9 +103,9 @@ body {{
     margin:0;
     padding:0;
 
-    overflow:hidden;
-
     background:#f2f2f2;
+
+    overflow:auto;
 }}
 
 /* =========================
@@ -114,13 +114,15 @@ body {{
 
 .wrapper {{
 
-    width:100%;
+    width:100vw;
+    height:100vh;
 
     overflow:auto;
 
     display:flex;
 
     justify-content:center;
+    align-items:flex-start;
 }}
 
 /* =========================
@@ -134,9 +136,9 @@ body {{
     width:1920px;
     height:720px;
 
-    margin:auto;
+    transform-origin: top left;
 
-    overflow:hidden;
+    transform: scale(0.75);
 
     background-image:
         url("data:image/png;base64,{encoded_image}");
@@ -144,8 +146,20 @@ body {{
     background-size:60%;
 
     background-repeat:no-repeat;
-    background-position:left 200px;
-    background-position:center 100px;
+
+    background-position:center 50px;
+}}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {{
+
+    .factory {{
+
+        transform: scale(0.45);
+    }}
 }}
 
 /* =========================
@@ -566,7 +580,7 @@ body {{
 
 </head>
 
-<body style="overflow:auto;">
+<body>
 
 <div class="wrapper">
 
