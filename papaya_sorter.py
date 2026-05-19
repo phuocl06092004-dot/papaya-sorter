@@ -105,7 +105,7 @@ body {{
 
     background:#f2f2f2;
 
-    overflow:auto;
+    overflow:hidden;
 }}
 
 /* =========================
@@ -117,7 +117,7 @@ body {{
     width:100vw;
     height:100vh;
 
-    overflow:auto;
+    overflow:hidden;
 
     display:flex;
 
@@ -136,9 +136,7 @@ body {{
     width:1920px;
     height:720px;
 
-    transform-origin: top left;
-
-    transform: scale(0.75);
+    transform-origin: top center;
 
     background-image:
         url("data:image/png;base64,{encoded_image}");
@@ -148,18 +146,6 @@ body {{
     background-repeat:no-repeat;
 
     background-position:center 50px;
-}}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 768px) {{
-
-    .factory {{
-
-        transform: scale(0.45);
-    }}
 }}
 
 /* =========================
@@ -691,6 +677,42 @@ body {{
 
 <script>
 
+// =========================
+// AUTO SCALE
+// =========================
+
+function scaleFactory() {{
+
+    const factory =
+        document.querySelector(".factory");
+
+    const scaleX =
+        window.innerWidth / 1920;
+
+    const scaleY =
+        window.innerHeight / 720;
+
+    const scale =
+        Math.min(scaleX, scaleY);
+
+    factory.style.transform =
+        `scale(${{scale}})`;
+
+    factory.style.transformOrigin =
+        "top center";
+}}
+
+scaleFactory();
+
+window.addEventListener(
+    "resize",
+    scaleFactory
+);
+
+// =========================
+// FACTORY
+// =========================
+
 const factory =
     document.querySelector(".factory");
 
@@ -1003,8 +1025,6 @@ setInterval(() => {{
 }}, 50);
 
 </script>
-
-</div>
 
 </div>
 
