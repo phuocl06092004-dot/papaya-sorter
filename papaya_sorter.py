@@ -3,7 +3,7 @@ import streamlit.components.v1 as components
 import base64
 
 # =========================
-# PAGE
+# GIAO DIỆN
 # =========================
 
 st.set_page_config(
@@ -14,7 +14,7 @@ st.set_page_config(
 st.title("🥭 HỆ THỐNG PHÂN LOẠI ĐU ĐỦ")
 
 # =========================
-# LOAD IMAGE
+# ĐỌC ẢNH
 # =========================
 
 with open("factory.png", "rb") as image_file:
@@ -24,28 +24,28 @@ with open("factory.png", "rb") as image_file:
     ).decode()
 
 # =========================
-# CONTROL PANEL
+# CÀI ĐẶT HỆ THỐNG
 # =========================
 
 st.subheader("⚙️ CÀI ĐẶT HỆ THỐNG")
 
 col1, col2, col3, col4 = st.columns(4)
 
-# SPEED
+# TỐC ĐỘ BĂNG TẢI
 
 with col1:
 
     belt_speed_mps = st.slider(
 
-        "🚀 TỐC ĐỘ BĂNG TẢI",
+        "🚀 TỐC ĐỘ BĂNG TẢI (ms)",
 
-        0.1,
-        2.0,
+        0.0,
+        1.0,
         0.62,
         0.01
     )
 
-# SPAWN
+# THỜI GIAN RA QUẢ
 
 with col2:
 
@@ -58,7 +58,7 @@ with col2:
         2
     )
 
-# EXTEND
+# XY LANH GẠT RA
 
 with col3:
 
@@ -66,13 +66,13 @@ with col3:
 
         "➡️ XY LANH GẠT RA (ms)",
 
-        100,
-        1000,
+        200,
         300,
+        240,
         10
     )
 
-# RETURN
+# XY LANH THU VỀ
 
 with col4:
 
@@ -80,9 +80,9 @@ with col4:
 
         "⬅️ XY LANH THU VỀ (ms)",
 
-        100,
-        1000,
+        200,
         300,
+        240,
         10
     )
 
@@ -92,945 +92,810 @@ with col4:
 
 components.html(
     f"""
-<html>
+    <html>
 
-<head>
+    <head>
 
-<style>
+    <style>
 
-body {{
+    body {{
 
-    margin:0;
-    padding:0;
+        margin:0;
+        padding:0;
 
-    background:#f2f2f2;
+        overflow:hidden;
 
-    overflow:hidden;
-}}
+        background:#f2f2f2;
+    }}
 
-/* =========================
-   WRAPPER
-========================= */
+    .factory {{
 
-.wrapper {{
+        position:relative;
 
-    width:100vw;
-    height:100vh;
+        width:100%;
+        height:720px;
 
-    overflow:hidden;
+        background-image:
+            url("data:image/png;base64,{encoded_image}");
 
-    display:flex;
+        background-size:60%;
 
-    justify-content:center;
-    align-items:flex-start;
-}}
+        background-repeat:no-repeat;
 
-/* =========================
-   FACTORY
-========================= */
+        background-position:center 50px;
+    }}
 
-.factory {{
+    /* =========================
+       INFO
+    ========================= */
 
-    position:relative;
+    .info {{
 
-    width:1920px;
-    height:720px;
+        position:absolute;
 
-    transform-origin: top center;
+        width:230px;
+        height:60px;
 
-    background-image:
-        url("data:image/png;base64,{encoded_image}");
+        background:white;
 
-    background-size:60%;
+        border-radius:12px;
 
-    background-repeat:no-repeat;
+        display:flex;
+        align-items:center;
+        justify-content:center;
 
-    background-position:center 50px;
-}}
+        font-size:22px;
+        font-weight:bold;
 
-/* =========================
-   BUTTON
-========================= */
+        box-shadow:
+            0 0 12px rgba(0,0,0,0.4);
+    }}
 
-.control-btn {{
+    .belt-info {{
 
-    position:absolute;
+        top:80px;
+        left:100px;
+    }}
 
-    width:140px;
-    height:55px;
+    .extend-info {{
 
-    border:none;
+        top:160px;
+        left:100px;
+    }}
 
-    border-radius:12px;
+    .return-info {{
 
-    color:white;
+        top:240px;
+        left:100px;
+    }}
 
-    font-size:22px;
-    font-weight:bold;
+    /* =========================
+       COUNTER
+    ========================= */
 
-    cursor:pointer;
+    .counter {{
 
-    box-shadow:
-        0 0 12px rgba(0,0,0,0.4);
-}}
+        position:absolute;
 
-.start-btn {{
+        width:250px;
+        height:60px;
 
-    top:80px;
-    left:500px;
+        background:white;
 
-    background:green;
-}}
+        border-radius:12px;
 
-.stop-btn {{
+        display:flex;
+        align-items:center;
+        justify-content:center;
 
-    top:80px;
-    left:680px;
+        font-size:24px;
+        font-weight:bold;
 
-    background:red;
-}}
+        box-shadow:
+            0 0 12px rgba(0,0,0,0.4);
+    }}
 
-/* =========================
-   INFO
-========================= */
+    .counter1 {{
 
-.info {{
+        top:340px;
+        left:100px;
 
-    position:absolute;
+        color:green;
+    }}
 
-    width:230px;
-    height:60px;
+    .counter2 {{
 
-    background:white;
+        top:420px;
+        left:100px;
 
-    border-radius:12px;
+        color:orange;
+    }}
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    .counter3 {{
 
-    font-size:22px;
-    font-weight:bold;
+        top:500px;
+        left:100px;
 
-    box-shadow:
-        0 0 12px rgba(0,0,0,0.4);
-}}
+        color:black;
+    }}
 
-.belt-info {{
+    /* =========================
+       CAMERA
+    ========================= */
 
-    top:80px;
-    left:100px;
-}}
+    .camera {{
 
-.extend-info {{
+        position:absolute;
 
-    top:160px;
-    left:100px;
-}}
+        top:300px;
+        left:800px;
 
-.return-info {{
+        width:100px;
+        height:45px;
 
-    top:240px;
-    left:100px;
-}}
+        background:#2196f3;
 
-/* =========================
-   COUNTER
-========================= */
+        color:white;
 
-.counter {{
+        border-radius:10px;
 
-    position:absolute;
+        display:flex;
+        align-items:center;
+        justify-content:center;
 
-    width:250px;
-    height:60px;
+        font-weight:bold;
 
-    background:white;
+        box-shadow:
+            0 0 10px rgba(0,0,0,0.4);
+    }}
 
-    border-radius:12px;
+    /* =========================
+       XY LANH
+    ========================= */
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    .cylinder {{
 
-    font-size:24px;
-    font-weight:bold;
+        position:absolute;
 
-    box-shadow:
-        0 0 12px rgba(0,0,0,0.4);
-}}
+        width:120px;
+        height:45px;
 
-.counter1 {{
+        color:white;
 
-    top:340px;
-    left:100px;
+        border-radius:10px;
 
-    color:green;
-}}
+        display:flex;
+        align-items:center;
+        justify-content:center;
 
-.counter2 {{
+        font-weight:bold;
 
-    top:420px;
-    left:100px;
+        transition:0.3s;
 
-    color:orange;
-}}
+        background:#666;
 
-.counter3 {{
+        box-shadow:
+            0 0 10px rgba(0,0,0,0.4);
+    }}
 
-    top:500px;
-    left:100px;
+    .cylinder1 {{
 
-    color:black;
-}}
+        top:355px;
+        left:900px;
+    }}
 
-/* =========================
-   CAMERA
-========================= */
+    .cylinder2 {{
 
-.camera {{
+        top:355px;
+        left:1250px;
+    }}
 
-    position:absolute;
+    /* =========================
+       SENSOR
+    ========================= */
 
-    top:300px;
-    left:800px;
+    .sensor {{
 
-    width:100px;
-    height:45px;
+        position:absolute;
 
-    background:#2196f3;
+        width:100px;
+        height:45px;
 
-    color:white;
+        color:white;
 
-    border-radius:10px;
+        border-radius:10px;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+        display:flex;
+        align-items:center;
+        justify-content:center;
 
-    font-weight:bold;
+        font-weight:bold;
 
-    box-shadow:
-        0 0 10px rgba(0,0,0,0.4);
-}}
+        transition:0.3s;
 
-/* =========================
-   XY LANH
-========================= */
+        box-shadow:
+            0 0 10px rgba(0,0,0,0.4);
+    }}
 
-.cylinder {{
+    .sensor1 {{
 
-    position:absolute;
+        top:500px;
+        left:750px;
 
-    width:120px;
-    height:45px;
+        background:red;
+    }}
 
-    color:white;
+    .sensor2 {{
 
-    border-radius:10px;
+        top:500px;
+        left:1180px;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+        background:#2196f3;
+    }}
 
-    font-weight:bold;
+    .sensor3 {{
 
-    transition:0.3s;
+        top:500px;
+        left:1570px;
 
-    background:#666;
+        background:#af874c;
+    }}
 
-    box-shadow:
-        0 0 10px rgba(0,0,0,0.4);
-}}
+    /* =========================
+       PAPAYA
+    ========================= */
 
-.cylinder1 {{
+    .papaya {{
 
-    top:355px;
-    left:900px;
-}}
+        position:absolute;
 
-.cylinder2 {{
+        width:60px;
+        height:60px;
 
-    top:355px;
-    left:1250px;
-}}
+        border-radius:50%;
 
-/* =========================
-   SENSOR
-========================= */
-
-.sensor {{
-
-    position:absolute;
-
-    width:100px;
-    height:45px;
-
-    color:white;
-
-    border-radius:10px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-weight:bold;
-
-    transition:0.3s;
-
-    box-shadow:
-        0 0 10px rgba(0,0,0,0.4);
-}}
-
-.sensor1 {{
-
-    top:500px;
-    left:750px;
-
-    background:red;
-}}
-
-.sensor2 {{
-
-    top:500px;
-    left:1180px;
-
-    background:#2196f3;
-}}
-
-.sensor3 {{
-
-    top:500px;
-    left:1570px;
-
-    background:#af874c;
-}}
-
-/* =========================
-   PAPAYA
-========================= */
-
-.papaya {{
-
-    position:absolute;
-
-    width:60px;
-    height:60px;
-
-    border-radius:50%;
-
-    left:450px;
-    top:400px;
-
-    box-shadow:
-        0 0 20px rgba(0,0,0,0.5);
-}}
-
-/* =========================
-   KHAY
-========================= */
-
-.bin {{
-
-    position:absolute;
-
-    width:170px;
-    height:90px;
-
-    border-radius:15px;
-
-    opacity:0.9;
-
-    box-shadow:
-        0 0 15px rgba(0,0,0,0.4);
-}}
-
-.left-bin {{
-
-    left:800px;
-    top:550px;
-
-    background:green;
-}}
-
-.center-bin {{
-
-    left:1250px;
-    top:550px;
-
-    background:gold;
-}}
-
-.right-bin {{
-
-    left:1750px;
-    top:550px;
-
-    background:black;
-}}
-
-/* =========================
-   LABEL
-========================= */
-
-.label {{
-
-    position:absolute;
-
-    font-size:24px;
-
-    font-weight:bold;
-
-    color:white;
-}}
-
-.left-label {{
-
-    left:850px;
-    top:580px;
-}}
-
-.center-label {{
-
-    left:1300px;
-    top:580px;
-
-    color:black;
-}}
-
-.right-label {{
-
-    left:1800px;
-    top:580px;
-}}
-
-/* =========================
-   ANIMATION
-========================= */
-
-@keyframes moveLeft {{
-
-    0% {{
         left:450px;
         top:400px;
+
+        box-shadow:
+            0 0 20px rgba(0,0,0,0.5);
     }}
 
-    50% {{
-        left:910px;
-        top:400px;
+    /* =========================
+       KHAY
+    ========================= */
+
+    .bin {{
+
+        position:absolute;
+
+        width:170px;
+        height:90px;
+
+        border-radius:15px;
+
+        opacity:0.9;
+
+        box-shadow:
+            0 0 15px rgba(0,0,0,0.4);
     }}
 
-    100% {{
+    .left-bin {{
+
+        left:800px;
+        top:550px;
+
+        background:green;
+    }}
+
+    .center-bin {{
+
+        left:1250px;
+        top:550px;
+
+        background:gold;
+    }}
+
+    .right-bin {{
+
+        left:1750px;
+        top:550px;
+
+        background:black;
+    }}
+
+    /* =========================
+       LABEL
+    ========================= */
+
+    .label {{
+
+        position:absolute;
+
+        font-size:24px;
+
+        font-weight:bold;
+
+        color:white;
+    }}
+
+    .left-label {{
+
         left:850px;
         top:580px;
     }}
-}}
 
-@keyframes moveCenter {{
+    .center-label {{
 
-    0% {{
-        left:450px;
-        top:400px;
-    }}
-
-    55% {{
-        left:1290px;
-        top:400px;
-    }}
-
-    100% {{
         left:1300px;
         top:580px;
-    }}
-}}
 
-@keyframes moveRight {{
-
-    0% {{
-        left:450px;
-        top:400px;
+        color:black;
     }}
 
-    70% {{
-        left:1570px;
-        top:400px;
-    }}
+    .right-label {{
 
-    100% {{
         left:1800px;
         top:580px;
     }}
-}}
 
-</style>
+    /* =========================
+       ANIMATION
+    ========================= */
 
-</head>
+    @keyframes moveLeft {{
 
-<body>
+        0% {{
+            left:450px;
+            top:400px;
+        }}
 
-<div class="wrapper">
+        50% {{
+            left:910px;
+            top:400px;
+        }}
 
-<div class="factory">
+        100% {{
+            left:850px;
+            top:580px;
+        }}
+    }}
 
-<!-- BUTTON -->
+    @keyframes moveCenter {{
 
-<button id="startBtn" class="control-btn start-btn">
-    START
-</button>
+        0% {{
+            left:450px;
+            top:400px;
+        }}
 
-<button id="stopBtn" class="control-btn stop-btn">
-    STOP
-</button>
+        55% {{
+            left:1290px;
+            top:400px;
+        }}
 
-<!-- INFO -->
+        100% {{
+            left:1300px;
+            top:580px;
+        }}
+    }}
 
-<div class="info belt-info">
-    🚀 {belt_speed_mps:.2f} m/s
-</div>
+    @keyframes moveRight {{
 
-<div class="info extend-info">
-    ➡️ {cylinder_extend:.0f} ms
-</div>
+        0% {{
+            left:450px;
+            top:400px;
+        }}
 
-<div class="info return-info">
-    ⬅️ {cylinder_return:.0f} ms
-</div>
+        70% {{
+            left:1570px;
+            top:400px;
+        }}
 
-<!-- COUNTER -->
+        100% {{
+            left:1800px;
+            top:580px;
+        }}
+    }}
 
-<div class="counter counter1">
-    🟢 XANH:
-    <span id="count1">0</span>
-</div>
+    </style>
 
-<div class="counter counter2">
-    🟡 CHÍN:
-    <span id="count2">0</span>
-</div>
+    </head>
 
-<div class="counter counter3">
-    ⚫ HỎNG:
-    <span id="count3">0</span>
-</div>
+    <body>
 
-<!-- CAMERA -->
+    <div class="factory">
 
-<div class="camera">
-    CAMERA
-</div>
+        <!-- INFO -->
 
-<!-- XY LANH -->
+        <div class="info belt-info">
+            🚀 {belt_speed_mps:.2f} ms
+        </div>
 
-<div
-    class="cylinder cylinder1"
-    id="cylinder1">
+        <div class="info extend-info">
+            ➡️ {cylinder_extend:.0f} ms
+        </div>
 
-    XY LANH 1
+        <div class="info return-info">
+            ⬅️ {cylinder_return:.0f} ms
+        </div>
 
-</div>
+        <!-- COUNTER -->
 
-<div
-    class="cylinder cylinder2"
-    id="cylinder2">
+        <div class="counter counter1">
+            🟢 XANH:
+            <span id="count1">0</span>
+        </div>
 
-    XY LANH 2
+        <div class="counter counter2">
+            🟡 CHIN:
+            <span id="count2">0</span>
+        </div>
 
-</div>
+        <div class="counter counter3">
+            ⚫ HONG:
+            <span id="count3">0</span>
+        </div>
 
-<!-- SENSOR -->
+        <!-- CAMERA -->
 
-<div class="sensor sensor1" id="sensor1">
-    SENSOR 1
-</div>
+        <div class="camera">
+            CAMERA
+        </div>
 
-<div class="sensor sensor2" id="sensor2">
-    SENSOR 2
-</div>
+        <!-- XY LANH -->
 
-<div class="sensor sensor3" id="sensor3">
-    SENSOR 3
-</div>
+        <div
+            class="cylinder cylinder1"
+            id="cylinder1">
 
-<!-- KHAY -->
+            XY LANH 1
 
-<div class="bin left-bin"></div>
+        </div>
 
-<div class="bin center-bin"></div>
+        <div
+            class="cylinder cylinder2"
+            id="cylinder2">
 
-<div class="bin right-bin"></div>
+            XY LANH 2
 
-<!-- LABEL -->
+        </div>
 
-<div class="label left-label">
-    XANH
-</div>
+        <!-- SENSOR -->
 
-<div class="label center-label">
-    CHÍN
-</div>
+        <div class="sensor sensor1" id="sensor1">
+            SENSOR 1
+        </div>
 
-<div class="label right-label">
-    HỎNG
-</div>
+        <div class="sensor sensor2" id="sensor2">
+            SENSOR 2
+        </div>
 
-</div>
+        <div class="sensor sensor3" id="sensor3">
+            SENSOR 3
+        </div>
 
-<script>
+        <!-- KHAY -->
 
-// =========================
-// AUTO SCALE
-// =========================
+        <div class="bin left-bin"></div>
 
-function scaleFactory() {{
+        <div class="bin center-bin"></div>
+
+        <div class="bin right-bin"></div>
+
+        <!-- LABEL -->
+
+        <div class="label left-label">
+            XANH
+        </div>
+
+        <div class="label center-label">
+            CHIN
+        </div>
+
+        <div class="label right-label">
+            HONG
+        </div>
+
+    </div>
+
+    <script>
 
     const factory =
         document.querySelector(".factory");
 
-    const scaleX =
-        window.innerWidth / 1920;
+    // COUNTER
 
-    const scaleY =
-        window.innerHeight / 720;
+    let greenCount = 0;
+    let yellowCount = 0;
+    let blackCount = 0;
 
-    const scale =
-        Math.min(scaleX, scaleY);
+    // RANDOM LIST
 
-    factory.style.transform =
-        `scale(${{scale}})`;
+    let types = [
 
-    factory.style.transformOrigin =
-        "top center";
-}}
+        {{
+            color:"green",
+            animation:"moveLeft"
+        }},
 
-scaleFactory();
+        {{
+            color:"gold",
+            animation:"moveCenter"
+        }},
 
-window.addEventListener(
-    "resize",
-    scaleFactory
-);
-
-// =========================
-// FACTORY
-// =========================
-
-const factory =
-    document.querySelector(".factory");
-
-// START STOP
-
-let running = true;
-
-// COUNTER
-
-let greenCount = 0;
-let yellowCount = 0;
-let blackCount = 0;
-
-// BUTTON
-
-document.getElementById(
-    "startBtn"
-).onclick = () => {{
-
-    running = true;
-}}
-
-document.getElementById(
-    "stopBtn"
-).onclick = () => {{
-
-    running = false;
-}}
-
-// RANDOM LIST
-
-let types = [
-
-    {{
-        color:"green",
-        animation:"moveLeft"
-    }},
-
-    {{
-        color:"gold",
-        animation:"moveCenter"
-    }},
-
-    {{
-        color:"black",
-        animation:"moveRight"
-    }}
-];
-
-// shuffle
-
-types.sort(() => Math.random() - 0.5);
-
-// CREATE PAPAYA
-
-function createPapaya() {{
-
-    const randomType =
-        types.shift();
-
-    if (types.length == 0) {{
-
-        types = [
-
-            {{
-                color:"green",
-                animation:"moveLeft"
-            }},
-
-            {{
-                color:"gold",
-                animation:"moveCenter"
-            }},
-
-            {{
-                color:"black",
-                animation:"moveRight"
-            }}
-        ];
-
-        types.sort(
-            () => Math.random() - 0.5
-        );
-    }}
-
-    const papaya =
-        document.createElement("div");
-
-    papaya.classList.add(
-        "papaya"
-    );
-
-    papaya.dataset.sensor1 = "0";
-    papaya.dataset.sensor2 = "0";
-    papaya.dataset.sensor3 = "0";
-
-    papaya.dataset.cylinder1 = "0";
-    papaya.dataset.cylinder2 = "0";
-
-    papaya.style.background =
-        randomType.color;
-
-    let duration = 8;
-
-    papaya.style.animation =
-
-        randomType.animation +
-
-        " " +
-
-        duration / ({belt_speed_mps} * 1.5) +
-
-        "s linear forwards";
-
-    factory.appendChild(
-        papaya
-    );
-
-    papaya.addEventListener(
-
-        "animationend",
-
-        () => {{
-
-            papaya.remove();
-
+        {{
+            color:"black",
+            animation:"moveRight"
         }}
-    );
-}}
+    ];
 
-// RANDOM QUẢ
+    // shuffle
 
-setInterval(() => {{
+    types.sort(() => Math.random() - 0.5);
 
-    if (running) {{
+    // CREATE PAPAYA
 
-        createPapaya();
-    }}
+    function createPapaya() {{
 
-}}, {papaya_spawn * 1000});
+        const randomType =
+            types.shift();
 
-// SENSOR
+        if (types.length == 0) {{
 
-setInterval(() => {{
+            types = [
 
-    if (!running) return;
+                {{
+                    color:"green",
+                    animation:"moveLeft"
+                }},
 
-    const papayas =
-        document.querySelectorAll(
-            ".papaya"
+                {{
+                    color:"gold",
+                    animation:"moveCenter"
+                }},
+
+                {{
+                    color:"black",
+                    animation:"moveRight"
+                }}
+            ];
+
+            types.sort(
+                () => Math.random() - 0.5
+            );
+        }}
+
+        // tạo quả
+
+        const papaya =
+            document.createElement("div");
+
+        papaya.classList.add(
+            "papaya"
         );
 
-    papayas.forEach((papaya) => {{
+        // trạng thái sensor
 
-        const rect =
-            papaya.getBoundingClientRect();
+        papaya.dataset.sensor1 = "0";
+        papaya.dataset.sensor2 = "0";
+        papaya.dataset.sensor3 = "0";
+        papaya.dataset.cylinder1 = "0";
+        papaya.dataset.cylinder2 = "0";
+        // màu
 
-        // SENSOR 1
+        papaya.style.background =
+            randomType.color;
+
+        // tốc độ
+
+        let duration = 8;
 
         if (
-
-            rect.left > 750 &&
-            rect.left < 1100 &&
-            rect.top > 500 &&
-
-            papaya.dataset.sensor1 == "0"
+            randomType.animation == "moveLeft"
         ) {{
 
-            papaya.dataset.sensor1 = "1";
+            duration = 5.5;
+        }}
 
-            document.getElementById(
-                "sensor1"
-            ).style.background = "lime";
+        else if (
+            randomType.animation == "moveCenter"
+        ) {{
 
-            greenCount++;
+            duration = 9;
+        }}
 
-            document.getElementById(
-                "count1"
-            ).innerText = greenCount;
+        else {{
 
-            setTimeout(() => {{
+            duration = 10;
+        }}
+
+        // animation
+
+        papaya.style.animation =
+
+            randomType.animation +
+
+            " " +
+
+            duration / ({belt_speed_mps} * 1.5) +
+
+            "s linear forwards";
+
+        factory.appendChild(
+            papaya
+        );
+
+        // tự xóa
+
+        papaya.addEventListener(
+
+            "animationend",
+
+            () => {{
+
+                papaya.remove();
+
+            }}
+        );
+    }}
+
+    // RANDOM QUẢ
+
+    setInterval(() => {{
+
+        createPapaya();
+
+    }}, {papaya_spawn * 1000});
+
+    // SENSOR
+
+    setInterval(() => {{
+
+        const papayas =
+            document.querySelectorAll(
+                ".papaya"
+            );
+
+        papayas.forEach((papaya) => {{
+
+            const rect =
+                papaya.getBoundingClientRect();
+
+            // SENSOR 1
+
+            if (
+
+                rect.left > 750 &&
+                rect.left < 1100 &&
+                rect.top > 500 &&
+
+                papaya.dataset.sensor1 == "0"
+            ) {{
+
+                papaya.dataset.sensor1 = "1";
+
+                // SENSOR
 
                 document.getElementById(
                     "sensor1"
-                ).style.background = "red";
+                ).style.background = "lime";
 
-            }}, 300);
-        }}
+            }}
+// =========================
+// XY LANH 1
+// =========================
 
-        // XY LANH 1
+if (
 
-        if (
+    rect.left > 900 &&
+    rect.left < 1000 &&
+    rect.top > 400 &&
 
-            rect.left > 900 &&
-            rect.left < 1000 &&
-            rect.top > 400 &&
+    papaya.dataset.cylinder1 != "1"
+) {{
 
-            papaya.dataset.cylinder1 != "1"
-        ) {{
+    papaya.dataset.cylinder1 = "1";
 
-            papaya.dataset.cylinder1 = "1";
+    document.getElementById(
+        "cylinder1"
+    ).style.background = "lime";
 
-            document.getElementById(
-                "cylinder1"
-            ).style.background = "lime";
+    setTimeout(() => {{
 
-            setTimeout(() => {{
+        document.getElementById(
+            "cylinder1"
+        ).style.background = "#666";
 
-                document.getElementById(
-                    "cylinder1"
-                ).style.background = "#666";
+    }}, 300);
+}}
+            // SENSOR 2
 
-            }}, {cylinder_return});
-        }}
+            if (
 
-        // SENSOR 2
+                rect.left > 1180 &&
+                rect.left < 1480 &&
+                rect.top > 500 &&
 
-        if (
+                papaya.dataset.sensor2 == "0"
+            ) {{
 
-            rect.left > 1180 &&
-            rect.left < 1480 &&
-            rect.top > 500 &&
+                papaya.dataset.sensor2 = "1";
 
-            papaya.dataset.sensor2 == "0"
-        ) {{
-
-            papaya.dataset.sensor2 = "1";
-
-            document.getElementById(
-                "sensor2"
-            ).style.background = "lime";
-
-            yellowCount++;
-
-            document.getElementById(
-                "count2"
-            ).innerText = yellowCount;
-
-            setTimeout(() => {{
+                // SENSOR
 
                 document.getElementById(
                     "sensor2"
-                ).style.background =
-                    "#2196f3";
+                ).style.background = "lime";
 
-            }}, 300);
-        }}
+                
+            }}
+// =========================
+// XY LANH 2
+// =========================
 
-        // XY LANH 2
+if (
 
-        if (
+    rect.left > 1100 &&
+    rect.left < 1350 &&
+    rect.top > 400 &&
+    papaya.dataset.cylinder2 != "1"
+) {{
 
-            rect.left > 1100 &&
-            rect.left < 1350 &&
-            rect.top > 400 &&
+    papaya.dataset.cylinder2 = "1";
 
-            papaya.dataset.cylinder2 != "1"
-        ) {{
+    document.getElementById(
+        "cylinder2"
+    ).style.background = "lime";
 
-            papaya.dataset.cylinder2 = "1";
+    setTimeout(() => {{
 
-            document.getElementById(
-                "cylinder2"
-            ).style.background = "lime";
+        document.getElementById(
+            "cylinder2"
+        ).style.background = "#666";
 
-            setTimeout(() => {{
+    }}, 300);
+}}
+            // SENSOR 3
 
-                document.getElementById(
-                    "cylinder2"
-                ).style.background =
-                    "#666";
+            if (
 
-            }}, {cylinder_return});
-        }}
+                rect.left > 1570 &&
+                rect.top > 500 &&
 
-        // SENSOR 3
+                papaya.dataset.sensor3 == "0"
+            ) {{
 
-        if (
-
-            rect.left > 1570 &&
-            rect.top > 500 &&
-
-            papaya.dataset.sensor3 == "0"
-        ) {{
-
-            papaya.dataset.sensor3 = "1";
-
-            document.getElementById(
-                "sensor3"
-            ).style.background = "lime";
-
-            blackCount++;
-
-            document.getElementById(
-                "count3"
-            ).innerText = blackCount;
-
-            setTimeout(() => {{
+                papaya.dataset.sensor3 = "1";
 
                 document.getElementById(
                     "sensor3"
-                ).style.background =
-                    "#af874c";
+                ).style.background = "lime";
 
-            }}, 300);
-        }}
+                blackCount++;
 
-    }});
+                document.getElementById(
+                    "count3"
+                ).innerText = blackCount;
 
-}}, 50);
+                setTimeout(() => {{
 
-</script>
+                    document.getElementById(
+                        "sensor3"
+                    ).style.background =
+                        "#af874c";
 
-</div>
+                }}, 300);
+            }}
 
-</body>
+        }});
 
-</html>
-""",
+    }}, 50);
+
+    </script>
+
+    </body>
+
+    </html>
+    """,
     height=720
 )
