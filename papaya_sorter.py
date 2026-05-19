@@ -144,8 +144,8 @@ body {{
     background-size:60%;
 
     background-repeat:no-repeat;
-
-    background-position:center 50px;
+    background-position:left 100px;
+    background-position:center 100px;
 }}
 
 /* =========================
