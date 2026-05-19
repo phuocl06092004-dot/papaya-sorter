@@ -843,6 +843,12 @@ setInterval(() => {{
             document.getElementById(
                 "sensor1"
             ).style.background = "lime";
+            setTimeout(() => {{
+
+            document.getElementById(
+            "sensor1"
+            ).style.background = "red";
+}}, 300);
         }}
 
         // XY LANH 1
@@ -887,6 +893,12 @@ setInterval(() => {{
             document.getElementById(
                 "sensor2"
             ).style.background = "lime";
+            setTimeout(() => {{
+
+            document.getElementById(
+            "sensor2"
+            ).style.background = "#2196f3";
+}}, 300);
         }}
 
         // XY LANH 2
