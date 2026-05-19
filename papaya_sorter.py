@@ -17,8 +17,7 @@ st.title("🥭 HỆ THỐNG PHÂN LOẠI ĐU ĐỦ")
 # ĐỌC ẢNH
 # =========================
 
-with open(r"C:\Users\phuoc\OneDrive\Desktop\công nghệ 4.0\python\factory.png", "rb") as image_file:
-
+with open("factory.png", "rb") as image_file:
 
     encoded_image = base64.b64encode(
         image_file.read()
