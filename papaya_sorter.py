@@ -813,7 +813,7 @@ function createPapaya() {{
         randomType.animation == "moveLeft"
     ) {{
 
-        duration = 4.2;
+        duration = 4.5;
     }}
     papaya.style.animation =
 
