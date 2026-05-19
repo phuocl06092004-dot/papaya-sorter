@@ -107,13 +107,32 @@ components.html(
 
         background:#f2f2f2;
     }}
+/* =========================
+   WRAPPER
+========================= */
 
+.wrapper {
+
+    width:100%;
+
+    overflow:auto;
+
+    display:flex;
+
+    justify-content:center;
+}
     .factory {{
+
+.factory {
 
         position:relative;
 
-        width:100%;
+        width:1920px;
         height:720px;
+
+        margin:auto;
+
+        overflow:hidden;
 
         background-image:
             url("data:image/png;base64,{encoded_image}");
@@ -501,9 +520,11 @@ components.html(
 
     </head>
 
-    <body>
+    <body style="overflow:auto;">
+    
+    <div class="wrapper">
 
-    <div class="factory">
+        <div class="factory">
 
         <!-- INFO -->
 
@@ -891,11 +912,15 @@ if (
 
     }}, 50);
 
-    </script>
+</script>
 
-    </body>
+    </div>
 
-    </html>
+</div>
+
+</body>
+
+</html>
     """,
     height=720
 )
