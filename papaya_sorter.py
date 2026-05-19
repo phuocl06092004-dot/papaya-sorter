@@ -809,7 +809,12 @@ function createPapaya() {{
         randomType.color;
 
     let duration = 8;
+    if (
+        randomType.animation == "moveLeft"
+    ) {
 
+        duration = 4;
+    }
     papaya.style.animation =
 
         randomType.animation +
