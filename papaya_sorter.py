@@ -68,7 +68,7 @@ with col3:
 
         100,
         1000,
-        240,
+        300,
         10
     )
 
@@ -82,7 +82,7 @@ with col4:
 
         100,
         1000,
-        240,
+        300,
         10
     )
 
@@ -747,6 +747,7 @@ function createPapaya() {{
     papaya.dataset.sensor1 = "0";
     papaya.dataset.sensor2 = "0";
     papaya.dataset.sensor3 = "0";
+
     papaya.dataset.cylinder1 = "0";
     papaya.dataset.cylinder2 = "0";
 
@@ -843,12 +844,20 @@ setInterval(() => {{
             document.getElementById(
                 "sensor1"
             ).style.background = "lime";
-            setTimeout(() => {{
+
+            greenCount++;
 
             document.getElementById(
-            "sensor1"
-            ).style.background = "red";
-}}, 300);
+                "count1"
+            ).innerText = greenCount;
+
+            setTimeout(() => {{
+
+                document.getElementById(
+                    "sensor1"
+                ).style.background = "red";
+
+            }}, 300);
         }}
 
         // XY LANH 1
@@ -893,12 +902,21 @@ setInterval(() => {{
             document.getElementById(
                 "sensor2"
             ).style.background = "lime";
-            setTimeout(() => {{
+
+            yellowCount++;
 
             document.getElementById(
-            "sensor2"
-            ).style.background = "#2196f3";
-}}, 300);
+                "count2"
+            ).innerText = yellowCount;
+
+            setTimeout(() => {{
+
+                document.getElementById(
+                    "sensor2"
+                ).style.background =
+                    "#2196f3";
+
+            }}, 300);
         }}
 
         // XY LANH 2
