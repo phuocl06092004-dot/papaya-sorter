@@ -155,7 +155,7 @@ body {{
 }}
 
 .start-btn {{
-
+    box-shadow:none;
     top:80px;
     left:500px;
 
@@ -741,7 +741,7 @@ const factory =
 // START STOP
 // =========================
 
-let running = true;
+let running = false;
 
 document.getElementById(
     "startBtn"
