@@ -11,7 +11,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🥭 HỆ THỐNG PHÂN LOẠI ĐU ĐỦ")
+st.title("🥭 HỆ THỐNG PHÂN LOẠI ĐU ĐỦ THEO MÀU SẮC")
 
 # =========================
 # LOAD IMAGE
