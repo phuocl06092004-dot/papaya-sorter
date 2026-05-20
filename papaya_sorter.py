@@ -41,7 +41,15 @@ with col1:
         0.62,
         0.01
     )
+    cylinder_pressure = st.slider(
 
+        "🛢️ ÁP SUẤT XY LANH",
+
+        1.0,
+        4.0,
+        3.0,
+        0.1
+    )
 with col2:
 
     papaya_spawn = st.slider(
@@ -52,8 +60,29 @@ with col2:
         10,
         2
     )
+    stroke_length = st.slider(
 
+        "↔️ HÀNH TRÌNH XY LANH",
+
+        10,
+       40,
+       22,
+      1
+    )
 with col3:
+# =========================
+# BRIGHTNESS
+# =========================
+
+    brightness = st.slider(
+
+    "💡 ĐỘ SÁNG MÔI TRƯỜNG",
+
+    400,
+    1200,
+    980,
+    10
+)
 
     cylinder_time = st.slider(
 
@@ -86,7 +115,7 @@ body {{
 }}
 
 .factory {{
-
+    overflow:hidden;
     position:relative;
 
     width:100%;
@@ -105,7 +134,7 @@ body {{
 ========================= */
 
 .control-btn {{
-
+    z-index:2;
     position:absolute;
 
     width:140px;
@@ -146,7 +175,7 @@ body {{
 ========================= */
 
 .info {{
-
+    z-index:2;
     position:absolute;
 
     width:250px;
@@ -169,28 +198,53 @@ body {{
 
 .belt-info {{
 
-    top:80px;
+    top:160px;
     left:100px;
 }}
 
 .cylinder-info {{
 
-    top:160px;
+    top:240px;
     left:100px;
 }}
 
 .success-info {{
 
-    top:240px;
+    top:80px;
+    left:1300px;
+}}
+.camera-rate-info {{
+
+    top:80px;
+    left:900px;
+}}
+.damage-info {{
+
+    top:80px;
+    left:1700px;
+}}
+.light-info {{
+
+    top:320px;
+    left:100px;
+}}
+.pressure-info {{
+
+    top:400px;
     left:100px;
 }}
 
+.stroke-info {{
+
+    top:480px;
+    left:100px;
+}}
 /* =========================
    COUNTER
 ========================= */
 
 .counter {{
-
+    z-index:2;
     position:absolute;
 
     width:250px;
@@ -213,24 +267,24 @@ body {{
 
 .counter1 {{
 
-    top:340px;
-    left:100px;
+    top:150px;
+    left:500px;
 
     color:green;
 }}
 
 .counter2 {{
 
-    top:420px;
-    left:100px;
+    top:150px;
+    left:900px;
 
     color:orange;
 }}
 
 .counter3 {{
 
-    top:500px;
-    left:100px;
+    top:150px;
+    left:1300px;
 
     color:black;
 }}
@@ -240,7 +294,7 @@ body {{
 ========================= */
 
 .camera {{
-
+    z-index:2;
     position:absolute;
 
     top:300px;
@@ -270,7 +324,7 @@ body {{
 ========================= */
 
 .cylinder {{
-
+    z-index:2;
     position:absolute;
 
     width:120px;
@@ -311,7 +365,7 @@ body {{
 ========================= */
 
 .sensor {{
-
+    z-index:2;
     position:absolute;
 
     width:100px;
@@ -362,7 +416,7 @@ body {{
 ========================= */
 
 .papaya {{
-
+    z-index:2;
     position:absolute;
 
     width:60px;
@@ -520,6 +574,31 @@ body {{
 
 <div class="factory">
 
+    <!-- ÁNH SÁNG -->
+
+    <div
+        id="lightOverlay"
+        style="
+            position:absolute;
+            inset:0;
+
+            background:rgba(
+                0,
+                0,
+                0,
+
+                {1 - ((brightness-400) / 650)}
+            );
+
+            pointer-events:none;
+
+            transition:0.3s;
+
+            z-index:1;
+        ">
+
+    </div>
+
     <!-- BUTTON -->
 
     <button id="startBtn" class="control-btn start-btn">
@@ -541,10 +620,39 @@ body {{
     </div>
 
     <div class="info success-info">
-        🎯 SUCCESS:
+        🎯 TỈ LỆ GẠT THÀNH CÔNG:
         <span id="successText"></span>
     </div>
+    <div class="info camera-rate-info">
+    📷 TỈ LỆ CHỤP ẢNH RÕ NÉT:
+    <span id="cameraAccuracy"></span>
 
+    </div>
+        <div class="info light-info">
+
+        💡
+        <span id="lightValue"></span>
+
+    </div>
+      <div class="info pressure-info">
+
+        🛢️ 
+    <span id="pressureValue"></span>
+
+    </div>
+
+       <div class="info stroke-info">
+
+      ↔️ 
+      <span id="strokeValue"></span>
+
+    </div>
+    <div class="info damage-info">
+
+        💥 TỈ LỆ KHÔNG DẬP:
+    <span id="damageRate"></span>
+
+    </div>
     <!-- COUNTER -->
 
     <div class="counter counter1">
@@ -676,7 +784,7 @@ let yellowCount = 0;
 let blackCount = 0;
 
 // =========================
-// HỒI QUY
+// HÀM TỈ LỆ GẠT
 // =========================
 
 let x1 =
@@ -712,7 +820,112 @@ let successRate =
     +
 
     35.476;
+// =========================
+// HÀM TỈ LỆ CHỤP ẢNH RÕ NÉT
+// =========================
 
+let x3 =
+    {brightness};
+
+let cameraAccuracy =
+
+    (
+        -39.31 * x2 * x2
+    )
+
+    +
+
+    (
+        -0.0000105 * x3 * x3
+    )
+
+    +
+
+    (
+        -0.0187 * x2 * x3
+    )
+
+    +
+
+    (
+        67.21 * x2
+    )
+
+    +
+
+    (
+        0.032 * x3
+    )
+
+    +
+
+    59.81;
+// =========================
+// TỈ LỆ DẬP
+// =========================
+
+let x4 =
+    {stroke_length};
+
+let x5 =
+    {cylinder_pressure};
+
+let damageRate =
+
+    (
+        -0.02 * x4 * x4
+    )
+
+    +
+
+    (
+        -0.8036 * x5 * x5
+    )
+
+    +
+
+    (
+        0 * x4 * x5
+    )
+
+    +
+
+    (
+        0.88 * x4
+    )
+
+    +
+
+    (
+        4.8229 * x5
+    )
+
+    +
+
+    80.085;
+
+// LIMIT
+
+if (damageRate > 100) {{
+
+    damageRate = 100;
+}}
+
+if (damageRate < 0) {{
+
+    damageRate = 0;
+}}
+// LIMIT
+
+if (cameraAccuracy > 100) {{
+
+    cameraAccuracy = 100;
+}}
+
+if (cameraAccuracy < 0) {{
+
+    cameraAccuracy = 0;
+}}
 // LIMIT
 
 if (successRate > 100) {{
@@ -725,6 +938,46 @@ if (successRate < 0) {{
     successRate = 0;
 }}
 
+// LIMIT
+
+if (cameraAccuracy > 100) {{
+
+    cameraAccuracy = 100;
+}}
+
+if (cameraAccuracy < 0) {{
+
+    cameraAccuracy = 0;
+}}
+
+// SHOW
+
+document.getElementById(
+    "cameraAccuracy"
+).innerText =
+
+    cameraAccuracy.toFixed(1) + "%";
+document.getElementById(
+    "damageRate"
+).innerText =
+
+    damageRate.toFixed(1) + "%";
+document.getElementById(
+    "lightValue"
+).innerText =
+
+    {brightness} + " lux";
+document.getElementById(
+    "pressureValue"
+).innerText =
+
+    {cylinder_pressure} + " bar";
+
+document.getElementById(
+    "strokeValue"
+).innerText =
+
+    {stroke_length} + " mm";
 // MISS RATE
 
 let missRate =
@@ -971,7 +1224,8 @@ setInterval(() => {{
 
             let missed =
                 Math.random() < missRate;
-
+            let damaged =
+                Math.random() > (damageRate / 100);
             // GẠT HỤT
 
             if (missed) {{
